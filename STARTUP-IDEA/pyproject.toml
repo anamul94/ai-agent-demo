@@ -1,0 +1,16 @@
+[project]
+name = "startup-idea"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "langchain>=0.3.25",
+    "langchain-aws>=0.2.22",
+    "langchain-core>=0.3.58",
+    "langchain-ollama>=0.3.2",
+    "langchain-tavily>=0.1.6",
+    "langgraph>=0.4.1",
+    "python-dotenv>=1.1.0",
+    "streamlit>=1.45.0",
+]

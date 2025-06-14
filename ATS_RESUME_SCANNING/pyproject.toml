@@ -1,0 +1,18 @@
+[project]
+name = "ats-resume-scanning"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "langchain>=0.3.25",
+    "langchain-aws>=0.2.22",
+    "langchain-community>=0.3.23",
+    "langfuse>=2.60.5",
+    "openpyxl>=3.1.5",
+    "pandas>=2.2.3",
+    "pillow>=11.2.1",
+    "pypdf>=5.4.0",
+    "python-dotenv>=1.1.0",
+    "streamlit>=1.45.0",
+]
