@@ -6,9 +6,9 @@ from pathlib import Path
 from langfuse.callback import CallbackHandler
 
 langfuse_handler = CallbackHandler(
-    public_key="pk-lf-826db379-3268-4ca5-99f4-1c4eefd0a24e",
-    secret_key="sk-lf-825a2e53-455a-4919-8862-fbbf39331ff2",
-    host="https://us.cloud.langfuse.com",
+    public_key=
+    secret_key=
+    host=,
 )
 
 st.title("AI-Powered Resume Screening and Evaluation System")
