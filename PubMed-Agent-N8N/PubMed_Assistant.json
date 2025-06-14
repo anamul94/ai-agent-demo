@@ -1,0 +1,183 @@
+{
+  "name": "PubMed Assistant",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "You are a helpfull pubmed QA assistant.\nAlways determine the question nature .\nFor medical question use pubmed tool to find info .\nfor follow up question also leverage pubmed "
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.8,
+      "position": [
+        280,
+        -80
+      ],
+      "id": "49e453f7-d577-4164-8aef-d1dca6502f12",
+      "name": "AI Agent",
+      "alwaysOutputData": true,
+      "retryOnFail": false
+    },
+    {
+      "parameters": {
+        "public": true,
+        "initialMessages": "Hi there! 👋\nHow can I assist you today?",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        80,
+        -80
+      ],
+      "id": "3999f239-4ac2-4683-9bc1-244a7121096a",
+      "name": "When chat message received",
+      "webhookId": "9a07ef0c-e15c-4dd7-ae04-4520107972ae"
+    },
+    {
+      "parameters": {
+        "model": "qwen-2.5-32b",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGroq",
+      "typeVersion": 1,
+      "position": [
+        140,
+        120
+      ],
+      "id": "7c1b8f02-0895-4c0e-966b-87a5d4867464",
+      "name": "Groq Chat Model",
+      "credentials": {
+        "groqApi": {
+          "id": "wB3uexAI7u7Y6sCW",
+          "name": "Groq account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "contextWindowLength": 10
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        340,
+        160
+      ],
+      "id": "b47e70d7-6cb4-4501-8bdb-a038ca62500b",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "connectionType": "sse"
+      },
+      "type": "n8n-nodes-mcp.mcpClient",
+      "typeVersion": 1,
+      "position": [
+        -360,
+        240
+      ],
+      "id": "87464f5f-c4bd-4685-984e-ddd808679f33",
+      "name": "MCP Client1",
+      "credentials": {
+        "mcpClientSseApi": {
+          "id": "HZsiHSpetuC83qRB",
+          "name": "MCP Client (STDIO) account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "MCP Tool for query pubmed",
+        "connectionType": "sse",
+        "operation": "executeTool",
+        "toolName": "PubMed-Query-Tool",
+        "toolParameters": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Tool_Parameters', ``, 'json') }}"
+      },
+      "type": "n8n-nodes-mcp.mcpClientTool",
+      "typeVersion": 1,
+      "position": [
+        560,
+        160
+      ],
+      "id": "c5a2299f-db3e-453b-83b1-aefd9177cfbc",
+      "name": "PubMed Query Tool",
+      "credentials": {
+        "mcpClientSseApi": {
+          "id": "HZsiHSpetuC83qRB",
+          "name": "MCP Client (STDIO) account"
+        }
+      },
+      "notes": "Pubmed Query tool"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Groq Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        []
+      ]
+    },
+    "MCP Client1": {
+      "main": [
+        []
+      ]
+    },
+    "PubMed Query Tool": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "bf5c372e-48f1-498d-b3a9-ebe829eac69d",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "4cd9fe4be895e06e0e7741b249c387d90e8aa833fbca335f3fcebe4203b8cb35"
+  },
+  "id": "lFpmjEnJ47INDEMn",
+  "tags": []
+}
