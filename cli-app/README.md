@@ -2,6 +2,15 @@
 
 A beautiful command-line interface for interacting with AI agents powered by Ollama and Agno framework.
 
+## 🎬 Demo
+
+<video width="800" controls>
+  <source src="./video/my-cli.mp4" type="video/mp4">
+  Your browser does not support the video tag.
+</video>
+
+*Watch the CLI in action - see how easy it is to interact with AI agents through the command line!*
+
 ## ✨ Features
 
 - 🎨 Beautiful CLI interface with Rich formatting
