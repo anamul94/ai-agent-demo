@@ -4,16 +4,9 @@ A beautiful command-line interface for interacting with AI agents powered by Oll
 
 ## 🎬 Demo
 
-<!-- To display video on GitHub: 
-1. Go to GitHub Issues or create a new issue
-2. Drag and drop the video file (./video/my-cli.mp4) into the comment box
-3. Copy the generated URL and replace the placeholder below -->
+[![AI Agent CLI Demo](https://img.youtube.com/vi/aSQECXkZuzE/0.jpg)](https://youtu.be/aSQECXkZuzE)
 
-![CLI Demo](https://raw.githubusercontent.com/USERNAME/REPO_NAME/main/cli-app/video/demo.gif)
-
-*CLI demonstration showing agent functionality and real-time interactions*
-
-> **Note**: Download and play the video file locally to see the full demo of the AI Agent CLI in action!
+*Click to watch the full demo on YouTube - see the AI Agent CLI in action!*
 
 ## ✨ Features
 
