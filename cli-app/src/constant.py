@@ -1,3 +1,3 @@
-DB_FILE="tmp/data.db"
+DB_FILE="/tmp/cli-agent/data.db"
 TABLE_NAME="agent_sessions"
-USER_FILE = "tmp/user.json"
+USER_FILE="/tmp/cli-agent/user.json"
