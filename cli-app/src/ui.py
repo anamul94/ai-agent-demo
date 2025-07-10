@@ -3,6 +3,8 @@ from rich.panel import Panel
 from rich.prompt import Prompt
 from rich.markdown import Markdown
 from models import get_available_models, create_model
+from session import get_user_id, save_user_id, create_session_id, get_storage
+from dbtest import get_last_session_id_by_user
 
 console = Console()
 
@@ -56,11 +58,75 @@ def show_message(message, title="💬 Your Message"):
         padding=(1, 2)
     ))
 
-def show_response(response_content):
+def show_response(response_content, metrics=None):
     if response_content.strip():
+        # Main response
         console.print(Panel(
             Markdown(response_content),
             title="🤖 Agent Response",
             border_style="blue",
             padding=(1, 2)
         ))
+        
+        # Metrics section
+        if metrics:
+            import json
+            if isinstance(metrics, str):
+                try:
+                    metrics = json.loads(metrics)
+                except:
+                    pass
+            
+            if isinstance(metrics, dict):
+                metrics_text = "\n".join([f"**{k}:** {v}" for k, v in metrics.items()])
+            else:
+                metrics_text = str(metrics)
+            
+            console.print(Panel(
+                Markdown(f"**Metadata:**\n{metrics_text}"),
+                title="📊 Metrics",
+                border_style="dim",
+                padding=(0, 1)
+            ))
+
+def get_or_create_user():
+    """Get existing user or create new one"""
+    user_id = get_user_id()
+    
+    if not user_id:
+        console.print(Panel(
+            "[bold yellow]Welcome! Please provide your user information.[/bold yellow]",
+            title="User Setup",
+            border_style="yellow"
+        ))
+        
+        user_id = Prompt.ask("Enter your username or email")
+        save_user_id(user_id)
+        console.print(f"✅ User ID saved: {user_id}", style="green")
+    else:
+        console.print(f"👋 Welcome back, {user_id}!", style="cyan")
+    
+    return user_id
+
+def select_session_mode():
+    """Ask user to create new or continue previous session"""
+    
+    console.print(Panel(
+        "[bold cyan]Session Options[/bold cyan]\n\n"
+        "1. Create new session\n"
+        "2. Continue previous session",
+        title="Session Selection",
+        border_style="blue"
+    ))
+    
+    choice = Prompt.ask("Choose option (1-2)", choices=["1", "2"])
+    
+    if choice == "1":
+        session_id = create_session_id()
+        console.print(f"✅ New session created: {session_id}...", style="green")
+        return session_id, True
+    else:
+        # For now, create new session (previous session retrieval would need more implementation)
+        session_id = get_last_session_id_by_user(get_user_id())
+        console.print(f"📝 Starting previous session: {session_id}...", style="yellow")
+        return session_id, False

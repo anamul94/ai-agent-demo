@@ -22,14 +22,25 @@ def chat_loop(agent, current_dir):
             
             try:
                 response_content = ""
+                stream_lines = 0
+                
                 for res in agent.run(context_message, stream=True):
                     if hasattr(res, 'content') and res.content:
                         response_content += res.content
                         print(res.content, end="", flush=True)
-                        # print(res.content_type)
+                        stream_lines += res.content.count('\n')
+                        
+                        if hasattr(res, 'event') and res.event == "RunCompleted":
+                            # RunCompleted events may contain final metrics
+                            if hasattr(res, 'metrics'):
+                                run_metrics = res.metrics
+                    
+                # Clear streaming output
+                print(f"\033[{stream_lines + 1}A\033[J", end="")
                 
-                print()
-                show_response(response_content)
+                # Show formatted response
+                # console.print(f"""userid {agent.user_id}.. session: {agent.session_id}""", style="red")
+                show_response(response_content, "agent")
                 
             except Exception as agent_error:
                 console.print(f"❌ Agent error: {agent_error}", style="red")

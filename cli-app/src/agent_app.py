@@ -3,12 +3,15 @@ from agno.agent import Agent
 from agno.tools.shell import ShellTools
 from agno.tools.docker import DockerTools
 from agno.tools.python import PythonTools
+from agno.storage.sqlite import SqliteStorage
 from pathlib import Path
 from tools.file import FileTools
 
+from constant import DB_FILE, TABLE_NAME
 
-
-def create_agent(model, base_dir="/"):
+def create_agent(model, base_dir="/", user_id=None, session_id=None,):
+    print("Creating agent...")
+    print(f"""userid: {user_id}, sessionid: {session_id}""")
     return Agent(
         name="DevOps Automation Specialist",
         model=model,
@@ -76,4 +79,12 @@ def create_agent(model, base_dir="/"):
         show_tool_calls=True,
         markdown=True,
         stream=True,
+        user_id=user_id,
+        session_id=session_id,
+        storage=SqliteStorage(
+        table_name=TABLE_NAME, db_file=DB_FILE
+        
+    ),
+        add_history_to_messages=True,
+       
     )
