@@ -32,8 +32,8 @@ cat > ~/.local/bin/my-cli << EOF
 ORIGINAL_DIR="\$(pwd)"
 # Change to the app directory to run the CLI
 cd "$CURRENT_DIR"
-# Run the CLI with the original directory as environment variable
-ORIGINAL_PWD="\$ORIGINAL_DIR" uv run python src/cli.py "\$@"
+# Set PYTHONPATH to include src directory and run the CLI
+ORIGINAL_PWD="\$ORIGINAL_DIR" PYTHONPATH="$CURRENT_DIR/src:\$PYTHONPATH" uv run python src/cli.py "\$@"
 EOF
 
 # Make it executable

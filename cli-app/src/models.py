@@ -6,7 +6,7 @@ from agno.models.openrouter import OpenRouter
 
 def get_available_models():
     return {
-        "1": {"class": Ollama, "id": "qwen3:latest", "name": "Qwen3 (Ollama)"},
+        "1": {"class": Ollama, "id": "hf.co/hrsvrn/linux-command-generator-llama3.2-1b:Q4_K_M", "name": "Qwen3 (Ollama)"},
         "2": {"class": Claude, "id": "apac.anthropic.claude-sonnet-4-20250514-v1:0", "name": "Claude Sonnet 4"},
         "3": {"class": AwsBedrock, "id": "apac.amazon.nova-pro-v1:0", "name": "Nova Pro"},
         "4": {"class": Groq, "id": "qwen/qwen3-32b", "name": "Groq"},
