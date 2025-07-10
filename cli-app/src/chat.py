@@ -22,6 +22,7 @@ def chat_loop(agent, current_dir):
             
             try:
                 response_content = ""
+                run_metrics=""
                 stream_lines = 0
                 
                 for res in agent.run(context_message, stream=True):
@@ -40,7 +41,7 @@ def chat_loop(agent, current_dir):
                 
                 # Show formatted response
                 # console.print(f"""userid {agent.user_id}.. session: {agent.session_id}""", style="red")
-                show_response(response_content, "agent")
+                show_response(response_content, run_metrics)
                 
             except Exception as agent_error:
                 console.print(f"❌ Agent error: {agent_error}", style="red")

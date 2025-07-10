@@ -1,4 +1,5 @@
-from langchain_community.document_loaders import YoutubeLoader
+from youtube_transcript_api import YouTubeTranscriptApi
+import re
 from langchain_core.prompts import PromptTemplate
 from typing_extensions import TypedDict
 from langgraph.graph import StateGraph, START, END
@@ -7,14 +8,18 @@ from dotenv import load_dotenv
 load_dotenv()
 from langchain_groq import ChatGroq
 
-llm = ChatGroq(
-    model="gemma2-9b-it",
-    temperature=0,
-    max_tokens=None,
-    timeout=None,
-    max_retries=2,
-    # other params...
-)
+llm = ChatOllama(model="gemma3:latest")
+    
+
+
+# llm = ChatGroq(
+#     model="gemma2-9b-it",
+#     temperature=0,
+#     max_tokens=None,
+#     timeout=None,
+#     max_retries=2,
+#     # other params...
+# )
 
 # llm = ChatOllama(model="mistral:latest")
 
@@ -41,14 +46,14 @@ blog_gen_chain = prompt | llm
 
 
 def yt_transcribeer(url):
-    loader = YoutubeLoader.from_youtube_url(
-        url,
-        add_video_info=False,
-        language=["bn", "en", "arabic"],
-    )
-    docs = loader.load()
-    content = "".join([doc.page_content for doc in docs])
-    return content
+    try:
+        video_id = re.search(r'(?:v=|/)([0-9A-Za-z_-]{11}).*', url).group(1)
+        transcript = YouTubeTranscriptApi.get_transcript(video_id, languages=['en', 'bn', 'ar'])
+        content = " ".join([entry['text'] for entry in transcript])
+        return content
+    except Exception as e:
+        print(f"Error loading YouTube content: {str(e)}")
+        raise ValueError(f"Failed to transcribe video: {str(e)}")
 
 
 class State(TypedDict):
@@ -59,7 +64,11 @@ class State(TypedDict):
 
 def transcriber(state: State) -> State:
     print("transcriber")
+    print(state["url"])
     content = yt_transcribeer(state["url"])
+    print(content)
+    if not content:
+        raise ValueError("No content transcribed from the video.")
     return {"content": content}
 
 

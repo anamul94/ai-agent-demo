@@ -86,5 +86,7 @@ def create_agent(model, base_dir="/", user_id=None, session_id=None,):
         
     ),
         add_history_to_messages=True,
+        num_history_responses=2,
+        num_history_runs=2
        
     )

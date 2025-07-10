@@ -20,29 +20,49 @@ A beautiful command-line interface for interacting with AI agents powered by Oll
 ## 📋 Prerequisites
 
 - Python 3.12+
-- [Ollama](https://ollama.ai/) installed and running
-- Qwen3 model downloaded in Ollama
+- [UV package manager](https://docs.astral.sh/uv/getting-started/installation/)
+- API keys for AI providers (see below)
 
-### Install Ollama and Model
+### Required API Keys
+
+Before running the CLI, you need to set up API keys for the AI providers:
 
 ```bash
-# Install Ollama (if not already installed)
+# For AWS Bedrock (Claude, Nova)
+export AWS_ACCESS_KEY_ID="your-access-key"
+export AWS_SECRET_ACCESS_KEY="your-secret-key"
+export AWS_REGION="your-region"
+
+# For Groq
+export GROQ_API_KEY="your-groq-api-key"
+
+#For Openrouter
+export OPENROUTER_API_KEY="openrouter key"
+
+# For Ollama (local)
+# Install Ollama and pull model
 curl -fsSL https://ollama.ai/install.sh | sh
-
-# Pull the Qwen3 model
 ollama pull qwen3:latest
+```
 
-# Verify Ollama is running
-ollama list
+**Add to your ~/.bashrc or ~/.zshrc:**
+```bash
+echo 'export AWS_ACCESS_KEY_ID="your-access-key"' >> ~/.bashrc
+echo 'export AWS_SECRET_ACCESS_KEY="your-secret-key"' >> ~/.bashrc
+echo 'export AWS_REGION="your-region"' >> ~/.bashrc
+echo 'export GROQ_API_KEY="your-groq-api-key"' >> ~/.bashrc
+echo 'export OPENROUTER_API_KEY="openrouter key"'>> ~/.bashrc
+source ~/.bashrc
 ```
 
 ## 🚀 Installation
 
-### Option 1: Development Installation
+### Option 1: System-wide Installation (Recommended)
 
-1. Clone or navigate to the project directory:
+1. Clone and navigate to the project directory:
    ```bash
-   cd /path/to/cli-app
+   git clone <repository-url>
+   cd cli-app
    ```
 
 2. Install dependencies:
@@ -50,36 +70,38 @@ ollama list
    uv sync
    ```
 
-3. Run the CLI:
+3. Run the installation script:
    ```bash
-   uv run python src/cli.py
+   chmod +x install.sh
+   ./install.sh
    ```
 
-### Option 2: System-wide Installation
-
-1. Make the CLI available system-wide:
+4. Add ~/.local/bin to PATH (if not already):
    ```bash
-   # Create the system-wide script
-   mkdir -p ~/.local/bin
-   
-   # Create the my-cli script
-   cat > ~/.local/bin/my-cli << 'EOF'
-#!/bin/bash
-cd /home/aa/Desktop/WORK/PERSONAL/AGENTS/AGNO/cli-app
-uv run python src/cli.py "$@"
-EOF
-   
-   # Make it executable
-   chmod +x ~/.local/bin/my-cli
-   
-   # Add to PATH if not already (add to ~/.bashrc or ~/.zshrc)
    echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.bashrc
    source ~/.bashrc
    ```
 
-2. Now you can run from anywhere:
+5. Now you can run from anywhere:
    ```bash
    my-cli
+   ```
+
+### Option 2: Development Mode
+
+1. Navigate to the project directory:
+   ```bash
+   cd cli-app
+   ```
+
+2. Install dependencies:
+   ```bash
+   uv sync
+   ```
+
+3. Run directly:
+   ```bash
+   uv run python src/cli.py
    ```
 
 ## 🎯 Usage
@@ -184,12 +206,14 @@ uv run python src/main.py
 
 ### Common Issues
 
-1. **"Agent failed to initialize"**
-   - Ensure Ollama is running: `ollama serve`
-   - Check if Qwen3 model is available: `ollama list`
-   - Pull the model if missing: `ollama pull qwen3:latest`
+1. **"Failed to initialize agent" / API Key Errors**
+   - Ensure API keys are set in environment variables
+   - Check your ~/.bashrc for correct API key exports
+   - Verify AWS credentials: `aws sts get-caller-identity`
+   - For Ollama: Ensure service is running: `ollama serve`
 
 2. **"Command not found: my-cli"**
+   - Run the install script: `./install.sh`
    - Ensure `~/.local/bin` is in your PATH
    - Check if the script is executable: `ls -la ~/.local/bin/my-cli`
 
@@ -197,9 +221,14 @@ uv run python src/main.py
    - Run `uv sync` to install dependencies
    - Ensure you're in the correct directory
 
-4. **CLI exits after one message**
-   - This should be fixed in the current version
-   - If it persists, check for error messages
+4. **"Table 'agent_sessions' not found"**
+   - This is normal on first run - the app will create new sessions
+   - Database tables are created automatically
+
+5. **Model-specific issues**
+   - **Ollama**: Pull the model: `ollama pull qwen3:latest`
+   - **AWS Bedrock**: Check region and model availability
+   - **Groq**: Verify API key is valid
 
 ### Debug Mode
 
