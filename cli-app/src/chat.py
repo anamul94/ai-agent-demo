@@ -1,6 +1,6 @@
 import os
 from rich.prompt import Prompt
-from ui import console, show_message, show_response
+from .ui import console, show_message, show_response
 
 def chat_loop(agent, current_dir):
     """Main chat loop"""

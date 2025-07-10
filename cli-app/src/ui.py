@@ -2,9 +2,9 @@ from rich.console import Console
 from rich.panel import Panel
 from rich.prompt import Prompt
 from rich.markdown import Markdown
-from models import get_available_models, create_model
-from session import get_user_id, save_user_id, create_session_id, get_storage
-from dbtest import get_last_session_id_by_user
+from .models import get_available_models, create_model
+from .session import get_user_id, save_user_id, create_session_id, get_storage
+from .dbtest import get_last_session_id_by_user
 
 console = Console()
 

@@ -1,6 +1,6 @@
 from sqlalchemy import create_engine, MetaData, Table, select, desc, and_
 from sqlalchemy.engine import Engine
-from constant import DB_FILE, TABLE_NAME
+from .constant import DB_FILE, TABLE_NAME
 from agno.storage.sqlite import SqliteStorage
 
 def get_engine(db_file: str = DB_FILE) -> Engine:

@@ -3,7 +3,7 @@ import json
 import uuid
 from pathlib import Path
 from agno.storage.sqlite import SqliteStorage
-from constant import DB_FILE, TABLE_NAME, USER_FILE
+from .constant import DB_FILE, TABLE_NAME, USER_FILE
 
 def ensure_tmp_dir():
     Path("tmp").mkdir(exist_ok=True)
