@@ -3,10 +3,11 @@ import json
 import uuid
 from pathlib import Path
 from agno.storage.sqlite import SqliteStorage
-from .constant import DB_FILE, TABLE_NAME, USER_FILE
+from src.constant import DB_FILE, TABLE_NAME, USER_FILE
 
 def ensure_tmp_dir():
-    Path("tmp").mkdir(exist_ok=True)
+    user_file_path= Path(USER_FILE)
+    user_file_path.parent.mkdir(parents=True, exist_ok=True)
 
 def get_user_id():
     """Get or create user ID"""

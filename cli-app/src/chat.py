@@ -1,6 +1,6 @@
 import os
 from rich.prompt import Prompt
-from .ui import console, show_message, show_response
+from ui import console, show_message, show_response
 
 def chat_loop(agent, current_dir):
     """Main chat loop"""
@@ -25,7 +25,7 @@ def chat_loop(agent, current_dir):
                 run_metrics=""
                 stream_lines = 0
                 
-                for res in agent.run(context_message, stream=True):
+                for res in agent.run(user_message, stream=True):
                     if hasattr(res, 'content') and res.content:
                         response_content += res.content
                         print(res.content, end="", flush=True)

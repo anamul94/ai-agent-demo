@@ -7,12 +7,12 @@ import os
 import sys
 import signal
 from dotenv import load_dotenv
-from .agent_app import create_agent
-from .ui import console, select_model, show_welcome, get_or_create_user, select_session_mode
-from .chat import chat_loop
+from agent_app import create_agent
+from src.ui import console, select_model, show_welcome, get_or_create_user, select_session_mode
+from chat import chat_loop
 # from session import get_storage
-from .dbtest import get_last_session_id_by_user
-from .session import create_session_id
+from dbtest import get_last_session_id_by_user
+from session import create_session_id
 
 load_dotenv(".env")
 
